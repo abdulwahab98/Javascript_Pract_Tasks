@@ -1,0 +1,102 @@
+<html>
+<head>
+<style>
+
+#email{
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 2px solid grey
+    
+}
+
+</style>
+</head>
+<body>
+    <!-- 
+     Chapter 49
+     Reading field values
+    -->
+    <table class="d">
+
+        <tr>
+            <td>John</td>
+            <td>Salary 200$</td>
+            <td><input type="submit"  value="Delete" onclick="SomeDeleteRowFunction()"/></td>
+        </tr>
+        <tr>
+                <td>Akhbar</td>
+                <td>Salary 700$</td>
+                <td><input type="button"  value="Delete" onclick="SomeDeleteRowFunction()"/></td>
+            </tr>
+            <tr>
+                    <td>Diesel</td>
+                    <td>Salary 400$</td>
+             <td>
+                 <button  value="Delete" onclick=add()>delete</button>
+             </td>
+                </tr>
+    </table>
+    
+</body>
+<script>
+
+function SomeDeleteRowFunction() {
+      // event.target will be the input element.
+      var td = event.target.parentNode; 
+      var tr = td.parentNode; // the row to be removed
+      tr.parentNode.removeChild(tr);
+}
+
+function add(){
+    var td1= event.target.parentNode;
+    var tr1= td1.parentNode;
+    tr1.parentNode.addchild(tr)
+}
+
+  // function checkAddress(){
+    //     var val = document.getElementById('email').value;
+    //     var d=document.getElementById("email");
+    //     //alert(val);
+    //     if(val === ""){
+    //         alert("Email address required");
+        
+    //         d.style.borderColor="red";
+    //     }
+    //     else {
+    //         alert("Thank you"+val);
+    //     }
+      
+    //     return false;
+    // }
+
+    // function over(target){
+    //     target.style.height="50px";
+    //     target.style.width="50px" ;
+            
+    //     }
+     
+
+
+    // function checkAddress(){
+
+    //     var val=  document.getElementById("email").value;
+    //     var col= document.getElementById("email");
+
+    //     if(val === ""){
+    //         alert("Email is required");
+    //         col.style.borderColor="yellowgreen";
+    //     }
+    //     else{
+
+    //         alert("Thankyou")
+    //     }
+    // }
+    
+
+
+
+</script>
+
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Caesar Cipher</title>
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var shift = 0;
+				function encipher()
+				{
+					var longalpha='aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ';
+					var plaintext = $('#plaintext textarea').val();
+					var ciphertext = plaintext.split('').map(function(a) {
+						return (s=longalpha.indexOf(a))>=0 ? longalpha[(s+shift*2) % 52] : a;
+					}).join('');
+					$('#ciphertext textarea').val(ciphertext);
+				};
+				var alphabet='abcdefghijklmnopqrstuvwxyz';
+				for(var i=0;i<26;i++)
+				{
+					$('#cipher #top').append('<div class="letter">'+alphabet[i]+'</div>');
+				}
+				$('#cipher #top .letter')
+					.clone().appendTo('#letters');
+				var o1=$('#cipher #bottom').offset();
+				var scroll = 0, oScroll = 0;
+				$('#cover').draggable({
+					axis: 'x',
+					drag: function(e, ui) {
+						var nScroll = $(this).position().left
+						scroll += nScroll - oScroll;
+						oScroll = nScroll;
+						var first = $('#letters .letter:first');
+						var w = first.width();
+						while(scroll < -w && w>0)
+						{
+							first.appendTo('#letters');
+							scroll+=w;
+							shift += 1;
+							first = $('#letters .letter:first');
+							w = first.width();
+						}
+						var last = $('#letters .letter:last');
+						w = last.width();
+						while(scroll > w && w>0)
+						{
+							last.prependTo('#letters');
+							scroll-=w;
+							shift -= 1;
+							last = $('#letters .letter:last');
+							w = last.width();
+						}
+						shift = shift % 26;
+						if(shift<0)
+							shift+=26;
+						$('#shift').html('Shift: '+shift);
+					},
+					stop: function(e,ui) {
+						$(this).css('left',0);
+						scroll = oScroll = 0;
+					}
+				});
+				$('#cover').bind('drag',encipher);
+				$('#plaintext').bind('input',encipher);
+				encipher();
+			});
+		</script>
+		<style type="text/css">
+			.title {
+				text-align: center;
+			}
+			#cipher {
+				width: 100%;
+				font-size: 2em;
+			}
+			#cipher .top, #cipher #bottom {
+				clear:both;
+				float:left;
+				width: 26em;
+				padding: 0;
+				height:1.1em;
+			}
+			#cipher #bottom {
+				overflow: hidden;
+				position: relative;
+				background: #eee;
+			}
+			#cipher #shift {
+				float: left;
+			}
+			
+			#cover {
+				position: absolute;
+				width:100%;
+				height:100%;
+			}
+			#cipher .letter {
+				float:left;
+				width: 1em;
+			}
+			#plaintext, #ciphertext {
+				width: 50%;
+				float:left;
+			}
+			textarea {
+				width: 100%;
+				font-size: 1.5em;
+				font-family: serif;
+				height: 3em;
+			}
+			#cryptographer {
+				clear: both;
+				font-size: 1.5em;
+			}
+		</style>	
+	</head>
+	<body>
+		<h1 class="title">Caesar Cipher</h1>
+		<div>
+		<p>Messages are enciphered by shifting every letter along the alphabet by a fixed amount.</p>
+		<p>Knowing how one letter is enciphered is enough to crack the whole thing.</p>
+
+		<p>Drag the bottom row of letter about to change the cipher.</p>
+		<p>Write text in the plaintext box and see it enciphered below.</p>
+		</div>
+		<div id="cipher">
+			<div id="top">
+			</div>
+			<br/>
+			<div id="bottom">
+				<div id="cover"></div>
+				<div id="letters"></div>
+			</div>
+			<div id="shift">
+				Shift: 0
+			</div>
+		</div>
+		
+		<form id="cryptographer">
+			<div id="plaintext">
+				<label>Plaintext</label>
+				<br/>
+				<textarea>This is no good, no good I say!</textarea>
+			</div>
+			<div id="ciphertext">
+				<label>Ciphertext</label>
+				<br/>
+				<textarea></textarea>
+			</div>
+		</form>
+	</body>
+</html>
